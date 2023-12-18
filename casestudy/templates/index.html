@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css"
+    />
+  </head>
+
+  <body class="font-sans bg-gray-100">
+    <header class="text-gray-600 body-font">
+      <div
+        class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center"
+      >
+        <a
+          href="/"
+          class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+            ></path>
+          </svg>
+          <span class="ml-3 text-xl">ITD105 Projects</span>
+        </a>
+        <nav
+          class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400 flex flex-wrap items-center text-base justify-center"
+        >
+          <!-- <a href="/todo" class="mr-5 hover:text-gray-900">Todo</a> -->
+          <a href="/classification" class="mr-5 hover:text-gray-900"
+            >Classification</a
+          >
+          <a href="/regression" class="mr-5 hover:text-gray-900">Regression</a>
+        </nav>
+      </div>
+    </header>
+    <div class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-lg mb-8">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-semibold mb-6">
+          Heart Failure Prediction Table
+        </h1>
+        <div class="text-right">
+          <a
+            class="text-blue-500 hover:underline mb-6 text-2xl"
+            href="/classification"
+            >Predict</a
+          >
+        </div>
+      </div>
+
+      <table
+        id="classpredictionsTable"
+        class="min-w-full bg-white border border-gray-300"
+      >
+        <thead>
+          <tr>
+            <!-- <th class="py-2 px-4 border-b text-center">ID</th> -->
+            <th class="py-2 px-4 border-b text-center">Age</th>
+            <th class="py-2 px-4 border-b text-center">Amaemia</th>
+            <th class="py-2 px-4 border-b text-center">Cr Ph</th>
+            <th class="py-2 px-4 border-b text-center">Diabetes</th>
+            <th class="py-2 px-4 border-b text-center">E F</th>
+            <th class="py-2 px-4 border-b text-center">HBP</th>
+            <th class="py-2 px-4 border-b text-center">Platelets</th>
+            <th class="py-2 px-4 border-b text-center">S C</th>
+            <th class="py-2 px-4 border-b text-center">S S</th>
+            <th class="py-2 px-4 border-b text-center">Sex</th>
+            <th class="py-2 px-4 border-b text-center">Smoking</th>
+            <th class="py-2 px-4 border-b text-center">Prediction</th>
+            <th class="py-2 px-4 border-b text-center">Actions</th>
+            <!-- <th class="py-2 px-4 border-b text-center">Timestamp</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for prediction in class_predictions %}
+          <tr id="predictionRow{{ prediction.id }}">
+            <!-- <td class="py-2 px-4 border-b text-center">{{ prediction.id }}</td> -->
+            <td class="py-2 px-4 border-b text-center">{{ prediction.age }}</td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.anaemia }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.creatinine_phosphokinase }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.diabetes }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.ejection_fraction }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.high_blood_pressure }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.platelets }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.serum_creatinine }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.serum_sodium }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">{{ prediction.sex }}</td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.smoking }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.prediction }}
+            </td>
+
+            <!-- <td class="py-2 px-4 border-b text-center">{{ prediction.timestamp }}</td> -->
+            <td class="py-2 px-4 border-b text-center">
+              <!-- Modal toggle -->
+              <button
+                data-modal-target="crud-modal-class{{ prediction.id }}"
+                data-modal-toggle="crud-modal-class{{ prediction.id }}"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                  />
+                </svg>
+              </button>
+
+              <!-- Main modal -->
+              <div
+                id="crud-modal-class{{ prediction.id }}"
+                tabindex="-1"
+                aria-hidden="true"
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+              >
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                  <!-- Modal content -->
+                  <div
+                    class="relative bg-white rounded-lg shadow dark:bg-gray-700"
+                  >
+                    <!-- Modal header -->
+                    <div
+                      class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+                    >
+                      <h3
+                        class="text-lg font-semibold text-gray-900 dark:text-white"
+                      >
+                        Update
+                      </h3>
+                      <button
+                        type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-toggle="crud-modal-class{{ prediction.id }}"
+                      >
+                        <svg
+                          class="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 14 14"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                          />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                      </button>
+                    </div>
+                    <!-- Modal body -->
+                    <form
+                      class="p-4 md:p-5"
+                      action="{{ url_for('classedit_prediction', id=prediction.id) }}"
+                      method="POST"
+                    >
+                      <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="age"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Age</label
+                          >
+                          <input
+                            type="number"
+                            name="age"
+                            id="age"
+                            value="{{ prediction.age }}"
+                            min="0"
+                            max="150"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="anaemia"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Anaemia</label
+                          >
+                          <input
+                            type="number"
+                            name="anaemia"
+                            id="anaemia"
+                            value="{{ prediction.anaemia }}"
+                            placeholder="0 for no, 1 for yes"
+                            min="0"
+                            max="1"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="creatinine_phosphokinase"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Creatinine Phosphokinase</label
+                          >
+                          <input
+                            type="number"
+                            name="creatinine_phosphokinase"
+                            id="creatinine_phosphokinase"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="diabetes"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Diabetes</label
+                          >
+                          <input
+                            type="number"
+                            name="diabetes"
+                            placeholder="0 for no, 1 for yes"
+                            id="diabetes"
+                            value="{{ prediction.diabetes }}"
+                            min="0"
+                            max="1"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="ejection_fraction"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Ejection Fraction</label
+                          >
+                          <input
+                            type="number"
+                            name="ejection_fraction"
+                            id="ejection_fraction"
+                            value="{{ prediction.ejection_fraction }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="high_blood_pressure"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >High Blood Pressure</label
+                          >
+                          <input
+                            type="number"
+                            name="high_blood_pressure"
+                            id="high_blood_pressure"
+                            value="{{ prediction.high_blood_pressure }}"
+                            placeholder="0 for no, 1 for yes"
+                            min="0"
+                            max="1"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="platelets"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Platelets</label
+                          >
+                          <input
+                            type="number"
+                            name="platelets"
+                            id="platelets"
+                            value="{{ prediction.platelets }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="serum_creatinine"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Serum Creatinine</label
+                          >
+                          <input
+                            type="number"
+                            name="serum_creatinine"
+                            id="serum_creatinine"
+                            value="{{ prediction.serum_creatinine }}"
+                            step="0.1"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="serum_sodium"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Serum Sodium</label
+                          >
+                          <input
+                            type="number"
+                            name="serum_sodium"
+                            id="serum_sodium"
+                            value="{{ prediction.serum_sodium }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="sex"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Sex</label
+                          >
+                          <input
+                            type="number"
+                            name="sex"
+                            id="sex"
+                            value="{{ prediction.sex }}"
+                            placeholder="0 for male, 1 for female"
+                            min="0"
+                            max="1"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="smoking"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Smoking</label
+                          >
+                          <input
+                            type="number"
+                            name="smoking"
+                            id="smoking"
+                            value="{{ prediction.smoking }}"
+                            placeholder="0 for no, 1 for yes"
+                            min="0"
+                            max="1"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+                      </div>
+
+                      <button
+                        type="submit"
+                        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      >
+                        <svg
+                          class="me-1 -ms-1 w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                        Save
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- &nbsp;|&nbsp; -->
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                onclick="classdeletePrediction({{ prediction.id }})"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+                  />
+                  <path
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+                  />
+                </svg>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-lg mb-8">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-semibold mb-6">
+          House Price Prediction Table
+        </h1>
+        <div class="text-right">
+          <a
+            class="text-blue-500 hover:underline mb-6 text-2xl"
+            href="/regression"
+            >Predict</a
+          >
+        </div>
+      </div>
+
+      <table
+        id="regpredictionsTable"
+        class="min-w-full bg-white border border-gray-300"
+      >
+        <thead>
+          <tr>
+            <!-- <th class="py-2 px-4 border-b text-center">ID</th> -->
+            <th class="py-2 px-4 border-b text-center">No.</th>
+            <th class="py-2 px-4 border-b text-center">House Age</th>
+            <th class="py-2 px-4 border-b text-center">Distance to MRT</th>
+            <th class="py-2 px-4 border-b text-center">Convenience Stores</th>
+            <th class="py-2 px-4 border-b text-center">Predicted Value</th>
+            <th class="py-2 px-4 border-b text-center">Actions</th>
+            <!-- <th class="py-2 px-4 border-b text-center">Timestamp</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          {% for prediction in reg_predictions %}
+          <tr id="predictionRow{{ prediction.id }}">
+            <!-- <td class="py-2 px-4 border-b text-center">{{ prediction.id }}</td> -->
+            <td class="py-2 px-4 border-b text-center">{{ prediction.id }}</td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.house_age }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.distance_to_MRT }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.num_convenience_stores }}
+            </td>
+            <td class="py-2 px-4 border-b text-center">
+              {{ prediction.predicted_value }}
+            </td>
+            <!-- <td class="py-2 px-4 border-b text-center">{{ prediction.timestamp }}</td> -->
+            <td class="py-2 px-4 border-b text-center">
+              <!-- Modal toggle -->
+              <button
+                data-modal-target="crud-modal-reg{{ prediction.id }}"
+                data-modal-toggle="crud-modal-reg{{ prediction.id }}"
+                type="button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
+                  />
+                </svg>
+              </button>
+
+              <!-- Main modal -->
+              <div
+                id="crud-modal-reg{{ prediction.id }}"
+                tabindex="-1"
+                aria-hidden="true"
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+              >
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                  <!-- Modal content -->
+                  <div
+                    class="relative bg-white rounded-lg shadow dark:bg-gray-700"
+                  >
+                    <!-- Modal header -->
+                    <div
+                      class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+                    >
+                      <h3
+                        class="text-lg font-semibold text-gray-900 dark:text-white"
+                      >
+                        Update
+                      </h3>
+                      <button
+                        type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-toggle="crud-modal-reg{{ prediction.id }}"
+                      >
+                        <svg
+                          class="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 14 14"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                          />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                      </button>
+                    </div>
+                    <!-- Modal body -->
+                    <form
+                      class="p-4 md:p-5"
+                      action="{{ url_for('regedit_prediction', id=prediction.id) }}"
+                      method="POST"
+                    >
+                      <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="house_age"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >House Age</label
+                          >
+                          <input
+                            type="number"
+                            name="house_age"
+                            value="{{ prediction.house_age }}"
+                            id="house_age"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="distance"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Distance to MRT</label
+                          >
+                          <input
+                            type="number"
+                            name="distance_to_MRT"
+                            id="distance"
+                            value="{{ prediction.distance_to_MRT }}"
+                            step="0.0001"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                          <label
+                            for="store"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Convenience Stores</label
+                          >
+                          <input
+                            type="number"
+                            name="num_convenience_stores"
+                            value="{{ prediction.num_convenience_stores }}"
+                            id="store"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            required=""
+                          />
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      >
+                        <svg
+                          class="me-1 -ms-1 w-5 h-5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            clip-rule="evenodd"
+                          ></path>
+                        </svg>
+                        Save
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- &nbsp;|&nbsp; -->
+
+              <button
+                type="button"
+                class="btn btn-danger"
+                onclick="regdeletePrediction({{ prediction.id }})"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+                  />
+                  <path
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+                  />
+                </svg>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#classpredictionsTable").DataTable();
+      });
+
+      $(document).ready(function () {
+        $("#regpredictionsTable").DataTable();
+      });
+      function regdeletePrediction(id) {
+        // Send AJAX request to delete the prediction immediately
+        fetch(`/regdelete/${id}`, {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response (you can update the UI as needed)
+            console.log(data.message);
+
+            // Optionally, remove the deleted prediction from the UI
+            // Adjust the code based on how your UI is structured
+            // For example, remove the corresponding row from a table
+            $("#predictionRow" + id).remove();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      function classdeletePrediction(id) {
+        // Send AJAX request to delete the prediction immediately
+        fetch(`/classdelete/${id}`, {
+          method: "POST",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the response (you can update the UI as needed)
+            console.log(data.message);
+            $("#predictionRow" + id).remove();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>

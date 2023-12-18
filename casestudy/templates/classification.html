@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Regression</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+  </head>
+
+  <body>
+    <header class="text-gray-600 body-font">
+      <div
+        class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center"
+      >
+        <a
+          href="/"
+          class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+            ></path>
+          </svg>
+          <span class="ml-3 text-xl">ITD105 Projects</span>
+        </a>
+        <nav
+          class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400 flex flex-wrap items-center text-base justify-center"
+        >
+          <!-- <a href="/todo" class="mr-5 hover:text-gray-900">Todo</a> -->
+          <a href="/classification" class="mr-5 hover:text-gray-900"
+            >Classification</a
+          >
+          <a href="/regression" class="mr-5 hover:text-gray-900">Regression</a>
+        </nav>
+      </div>
+    </header>
+    <div>
+      <div
+        class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-lg mb-8"
+      >
+        <div class="flex justify-between items-center">
+          <h1 class="text-3xl font-semibold mb-6">Heart Failure Prediction</h1>
+          <div class="text-right">
+            <a
+              class="text-blue-500 hover:underline mb-6 text-2xl"
+              href="/classdata"
+              >Saved Data</a
+            >
+          </div>
+        </div>
+
+        <form method="post" action="/classpredict" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col">
+              <label for="age" class="text-lg mb-2">Age:</label>
+              <input
+                type="number"
+                name="age"
+                placeholder=""
+                min="0"
+                max="150"
+                placeholder="Age"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="anaemia" class="text-lg mb-2">Anaemia:</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="anaemia"
+                placeholder="0 for false, 1 for true"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="creatinine_phosphokinase" class="text-lg mb-2"
+                >Creatinine Phosphokinase:</label
+              >
+              <input
+                type="number"
+                name="creatinine_phosphokinase"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="diabetes" class="text-lg mb-2">Diabetes:</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="diabetes"
+                placeholder="0 for false, 1 for true"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="ejection_fraction" class="text-lg mb-2"
+                >Ejection Fraction:</label
+              >
+              <input
+                type="number"
+                name="ejection_fraction"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="high_blood_pressure" class="text-lg mb-2"
+                >High Blood Pressure:</label
+              >
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="high_blood_pressure"
+                placeholder="0 for false, 1 for true"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="platelets" class="text-lg mb-2">Platelets:</label>
+              <input
+                type="number"
+                name="platelets"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="serum_creatinine" class="text-lg mb-2"
+                >Serum Creatinine:</label
+              >
+              <input
+                type="number"
+                step="0.02"
+                name="serum_creatinine"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="serum_sodium" class="text-lg mb-2"
+                >Serum Sodium:</label
+              >
+              <input
+                type="number"
+                name="serum_sodium"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <label for="sex" class="text-lg mb-2">Sex:</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="sex"
+                placeholder="0 for false, 1 for true"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div class="flex flex-col">
+              <label for="smoking" class="text-lg mb-2">Smoking:</label>
+              <input
+                type="number"
+                min="0"
+                max="1"
+                name="smoking"
+                placeholder="0 for false, 1 for true"
+                required
+                class="border rounded-lg py-2 px-3 focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="bg-blue-500 text-gray py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+          >
+            Predict
+          </button>
+        </form>
+
+        {% if prediction is defined %}
+        <h2>
+          {% if prediction == 0 %} Predicted that the patient is alive {% elif
+          prediction == 1%} Predicted that the patient died due to heart failure
+          {% else %} Invalid prediction value {% endif %}
+        </h2>
+        <!-- <h2>Prediction: {{ prediction }}</h2> -->
+
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
