@@ -8,7 +8,7 @@ then to open flask app
 
 then (all in terminal)
 
-cd casestudy
+cd casestudy: /n
 
 
 python app.py
