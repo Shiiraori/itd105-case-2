@@ -9,5 +9,7 @@ then to open flask app
 then (all in terminal)
 
 cd casestudy
+
+
 python app.py
 
